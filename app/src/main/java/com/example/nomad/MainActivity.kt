@@ -21,6 +21,10 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.filled.Person
@@ -44,6 +48,8 @@ import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.ImeOptions
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.core.os.postDelayed
@@ -88,17 +94,29 @@ fun Navigation(){
           )
           Spacer(modifier = Modifier.height(20.dp))
 
-            var text by remember {
-              mutableStateOf("Type here....")
+            var username by remember {
+              mutableStateOf("")
             }
+          var isInvalidFormat by remember {
+            mutableStateOf(false)
+          }
             OutlinedTextField(
-              value = "Type here",
-              onValueChange = { newText ->
-                text = newText
+              value = username,
+              onValueChange = { if (it.matches("^[a-zA-Z0-9]*$".toRegex())) { // Allow letters and numbers
+                username = it
+                isInvalidFormat = false
+              } else {
+                isInvalidFormat = true
+              }
               },
               label = {
                 Text(text = "Username")
               },
+              isError = isInvalidFormat,
+              placeholder = {Text(text = "Enter your username")},
+              supportingText = { Text(text = "Use characters and digits format.")},
+              singleLine = true,
+              keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
               leadingIcon = {
                 IconButton(onClick = { /*TODO*/ }) {
                   Icon(imageVector = Icons.Filled.Person, contentDescription = "PERSON ICON")
@@ -106,17 +124,26 @@ fun Navigation(){
               },
             )
           Spacer(modifier = Modifier.height(20.dp))
-            var number by remember {
-              mutableStateOf("Type here.....")
+            var password by remember {
+              mutableStateOf("")
             }
             OutlinedTextField(
-              value = "Type here",
-              onValueChange = { newnumber ->
-                number = newnumber
+              value = password,
+              onValueChange = { if (it.matches("^[0-9]*$".toRegex())) { // Validate only numbers
+                password = it
+                isInvalidFormat = false
+              } else {
+                isInvalidFormat = true
+              }
               },
               label = {
                 Text(text = "password")
               },
+              isError = isInvalidFormat,
+              placeholder = {Text(text = "Enter your password")},
+              supportingText = { Text(text =  "Use digits format.")},
+              singleLine = true,
+              keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
               leadingIcon = {
                 IconButton(onClick = { /*TODO*/ }) {
                   Icon(imageVector = Icons.Filled.Lock, contentDescription = "PERSON ICON")
@@ -126,7 +153,6 @@ fun Navigation(){
           Spacer(modifier = Modifier.height(20.dp))
             TextButton(onClick = { /*TODO*/ }) {
               Text(text = "Login")
-
             }
           }
         }
