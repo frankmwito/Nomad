@@ -1,5 +1,6 @@
 package com.example.nomad
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.animation.OvershootInterpolator
 import androidx.activity.ComponentActivity
@@ -56,6 +57,7 @@ class MainActivity : ComponentActivity() {
     }
     }
   }
+@SuppressLint("SuspiciousIndentation")
 @Composable
 fun Navigation(){
   val navController = rememberNavController()
@@ -153,7 +155,7 @@ fun Navigation(){
               else PasswordVisualTransformation()
             )
           Spacer(modifier = Modifier.height(20.dp))
-            TextButton(onClick = { /*TODO*/ }) {
+            TextButton(onClick = { navController.navigate("main_activity2") }) {
               Text(text = "Login")
             }
           }
