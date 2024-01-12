@@ -1,6 +1,7 @@
 package com.example.nomad
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Bundle
 import android.view.animation.OvershootInterpolator
 import androidx.activity.ComponentActivity
@@ -36,6 +37,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -117,6 +119,7 @@ fun Navigation(){
           var passwordVisibility by remember {
             mutableStateOf(false)
           }
+          val mContext = LocalContext.current
           val icon = if(passwordVisibility)
             painterResource(id = R.drawable.visibility)
           else
@@ -155,7 +158,7 @@ fun Navigation(){
               else PasswordVisualTransformation()
             )
           Spacer(modifier = Modifier.height(20.dp))
-            TextButton(onClick = { navController.navigate("main_activity2") }) {
+            TextButton(onClick = {mContext.startActivity(Intent(mContext, MainActivity2::class.java)) }) {
               Text(text = "Login")
             }
           }
