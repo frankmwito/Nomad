@@ -1,18 +1,11 @@
 package com.example.nomad
 
-import android.content.Intent
-import android.icu.text.AlphabeticIndex.Bucket.LabelType
 import android.os.Bundle
-import android.os.Handler
-import android.text.Layout
 import android.view.animation.OvershootInterpolator
-import android.window.SplashScreen
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.animation.Animatable
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.tween
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -21,21 +14,16 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
-import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -49,16 +37,13 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.ImeAction
-import androidx.compose.ui.text.input.ImeOptions
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
-import androidx.core.os.postDelayed
-import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.nomad.ui.theme.NomadTheme
 import kotlinx.coroutines.delay
 
 class MainActivity : ComponentActivity() {
@@ -127,6 +112,13 @@ fun Navigation(){
             var password by remember {
               mutableStateOf("")
             }
+          var passwordVisibility by remember {
+            mutableStateOf(false)
+          }
+          val icon = if(passwordVisibility)
+            painterResource(id = R.drawable.visibility)
+          else
+            painterResource(id = R.drawable.visibilityoff)
             OutlinedTextField(
               value = password,
               onValueChange = { if (it.matches("^[0-9]*$".toRegex())) { // Validate only numbers
@@ -149,6 +141,16 @@ fun Navigation(){
                   Icon(imageVector = Icons.Filled.Lock, contentDescription = "PERSON ICON")
                 }
               },
+              trailingIcon = {
+                IconButton(onClick = {
+                  passwordVisibility = !passwordVisibility
+                }) {
+                  Icon(painter = icon,
+                    contentDescription = "visibility logo")
+                }
+              },
+              visualTransformation = if(passwordVisibility) VisualTransformation.None
+              else PasswordVisualTransformation()
             )
           Spacer(modifier = Modifier.height(20.dp))
             TextButton(onClick = { /*TODO*/ }) {
