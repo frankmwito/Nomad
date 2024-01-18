@@ -59,10 +59,10 @@ class MainActivity2 : ComponentActivity() {
     setContent {
       HomeScreen()
 
-      }
-
     }
+
   }
+}
 @ExperimentalFoundationApi
 @Composable
 fun HomeScreen() {
@@ -111,18 +111,18 @@ fun HomeScreen() {
         )
       )
     }
-      BottomMenu(
-        items = listOf(
-          BottomMenuContent("Home", R.drawable.home),
-          BottomMenuContent("Inventory", R.drawable.inventory),
-          BottomMenuContent("Management", R.drawable.management),
-          BottomMenuContent("Help", R.drawable.help),
-        ),
-        modifier = Modifier
-          .fillMaxWidth()
-          .padding(15.dp)
-          .align(alignment = Alignment.BottomCenter)
-      )
+    BottomMenu(
+      items = listOf(
+        BottomMenuContent("Home", R.drawable.home),
+        BottomMenuContent("Inventory", R.drawable.inventory),
+        BottomMenuContent("Management", R.drawable.management),
+        BottomMenuContent("Help", R.drawable.help),
+      ),
+      modifier = Modifier
+        .fillMaxWidth()
+        .padding(15.dp)
+        .align(alignment = Alignment.BottomCenter)
+    )
   }
 }
 
@@ -377,7 +377,7 @@ fun FeatureItem(
         .padding(15.dp)
     )
     {
-     Text(
+      Text(
         text = features.title,
         lineHeight = 26.sp,
         modifier = Modifier.align(Alignment.TopStart)
