@@ -1,4 +1,4 @@
-@file:OptIn(ExperimentalFoundationApi::class)
+@file:OptIn(ExperimentalFoundationApi::class, ExperimentalFoundationApi::class)
 
 package com.example.nomad
 
@@ -7,6 +7,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -28,18 +29,12 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.Color.Companion.Black
 import androidx.compose.ui.graphics.Color.Companion.Blue
-import androidx.compose.ui.graphics.Color.Companion.Transparent
 import androidx.compose.ui.graphics.Color.Companion.White
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.res.colorResource
@@ -47,17 +42,20 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
 
-class MainActivity2 : ComponentActivity() {
+class HomeScreen : ComponentActivity() {
+  @OptIn(ExperimentalFoundationApi::class)
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     setContent {
-      HomeScreen()
+      Home_screen()
+      MainScreen()
 
     }
 
@@ -65,7 +63,7 @@ class MainActivity2 : ComponentActivity() {
 }
 @ExperimentalFoundationApi
 @Composable
-fun HomeScreen() {
+fun Home_screen() {
   Box(
     modifier = Modifier
       .background(White)
@@ -111,89 +109,6 @@ fun HomeScreen() {
         )
       )
     }
-    BottomMenu(
-      items = listOf(
-        BottomMenuContent("Home", R.drawable.home),
-        BottomMenuContent("Inventory", R.drawable.inventory),
-        BottomMenuContent("Management", R.drawable.management),
-        BottomMenuContent("Help", R.drawable.help),
-      ),
-      modifier = Modifier
-        .fillMaxWidth()
-        .padding(15.dp)
-        .align(alignment = Alignment.BottomCenter)
-    )
-  }
-}
-
-@Composable
-fun BottomMenu(
-  items: List<BottomMenuContent>,
-  modifier: Modifier = Modifier,
-  activeHighlightColor: Color = Blue,
-  activeTextColor: Color = White,
-  inactiveTextColor: Color = Black,
-  initialSelectedItemIndex: Int = 0
-) {
-  var selectedItemIndex by remember {
-    mutableStateOf(initialSelectedItemIndex)
-  }
-  Row(
-    horizontalArrangement = Arrangement.SpaceAround,
-    verticalAlignment = Alignment.CenterVertically,
-    modifier = modifier
-      .fillMaxWidth()
-      .background(White)
-      .padding(15.dp)
-  ) {
-    items.forEachIndexed { index, item ->
-      BottomMenuItem(
-        item = item,
-        isSelected = index == selectedItemIndex,
-        activeHighlightColor = activeHighlightColor,
-        activeTextColor = activeTextColor,
-        inactiveTextColor = inactiveTextColor
-      ) {
-        selectedItemIndex = index
-      }
-    }
-  }
-}
-
-@Composable
-fun BottomMenuItem(
-  item: BottomMenuContent,
-  isSelected: Boolean = false,
-  activeHighlightColor: Color = Blue,
-  activeTextColor: Color = White,
-  inactiveTextColor: Color = Color.Cyan,
-  onItemClick: () -> Unit
-) {
-  Column(
-    horizontalAlignment = Alignment.CenterHorizontally,
-    verticalArrangement = Arrangement.Center,
-    modifier = Modifier.clickable {
-      onItemClick()
-    }
-  ) {
-    Box(
-      contentAlignment = Alignment.Center,
-      modifier = Modifier
-        .clip(RoundedCornerShape(10.dp))
-        .background(if (isSelected) activeHighlightColor else Transparent)
-        .padding(10.dp)
-    ) {
-      Icon(
-        painter = painterResource(id = item.iconId),
-        contentDescription = item.title,
-        tint = if (isSelected) activeTextColor else inactiveTextColor,
-        modifier = Modifier.size(20.dp)
-      )
-    }
-    Text(
-      text = item.title,
-      color = if(isSelected) activeTextColor else inactiveTextColor
-    )
   }
 }
 
@@ -208,9 +123,9 @@ fun GreetingSection() {
     Column(
       verticalArrangement = Arrangement.Center
     ) {
-      Icon(
-        painter = painterResource(id = R.drawable.nomad1 ),
-        contentDescription = null,
+      Image(
+        painter = painterResource(id = R.drawable.nomad1),
+        contentDescription = "null",
         modifier = Modifier.size(60.dp, 60.dp)
       )
     }
@@ -242,10 +157,9 @@ fun GreetingSection() {
     }
   }
 }
-
 @Composable
 fun Subscription(
-  color: Color = Color.DarkGray) {
+  color: Color = Color.Cyan) {
   Row(
     verticalAlignment = Alignment.CenterVertically,
     horizontalArrangement = Arrangement.SpaceBetween,
@@ -275,7 +189,7 @@ fun Subscription(
       modifier = Modifier
         .size(40.dp)
         .clip(CircleShape)
-        .background(Transparent)
+        .background(Blue)
         .padding(10.dp)
     ) {
       Icon(
@@ -405,4 +319,11 @@ fun FeatureItem(
       )
     }
   }
+}
+
+@OptIn(ExperimentalFoundationApi::class)
+@Preview(showBackground = true)
+@Composable
+fun PreviewHome_Screen(){
+  Home_screen()
 }

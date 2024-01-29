@@ -47,6 +47,7 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.nomad.ui.theme.NomadTheme
 import kotlinx.coroutines.delay
 
 class MainActivity : ComponentActivity() {
@@ -158,7 +159,7 @@ fun Navigation(){
               else PasswordVisualTransformation()
             )
           Spacer(modifier = Modifier.height(20.dp))
-            TextButton(onClick = {mContext.startActivity(Intent(mContext, MainActivity2::class.java)) }) {
+            TextButton(onClick = {mContext.startActivity(Intent(mContext, HomeScreen::class.java)) }) {
               Text(text = "Login")
             }
           }
