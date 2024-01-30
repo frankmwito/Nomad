@@ -5,6 +5,7 @@ package com.example.nomad
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
@@ -16,38 +17,71 @@ import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.Atm
+import androidx.compose.material.icons.rounded.AttachMoney
+import androidx.compose.material.icons.rounded.KeyboardArrowDown
+import androidx.compose.material.icons.rounded.KeyboardArrowUp
+import androidx.compose.material.icons.rounded.Money
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.Color.Companion.Blue
 import androidx.compose.ui.graphics.Color.Companion.White
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.FontFamily
-import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
+val transaction = listOf(
+  Transactions(
+    name = "Mpesa",
+    balance = 20000,
+    icon = Icons.Rounded.AttachMoney
+  ),
+
+  Transactions(
+    name = "Card",
+    balance = 35000,
+    icon = Icons.Rounded.Atm
+  ),
+
+  Transactions(
+    name = "Cash",
+    balance = 50000,
+    icon = Icons.Rounded.Money
+  ),
+)
 
 class HomeScreen : ComponentActivity() {
   @OptIn(ExperimentalFoundationApi::class)
@@ -74,7 +108,7 @@ fun Home_screen() {
         .fillMaxSize()
     ) {
       GreetingSection()
-      Subscription()
+      TransactionSection()
 
       FeatureSection(
         features = listOf(
@@ -158,8 +192,15 @@ fun GreetingSection() {
   }
 }
 @Composable
-fun Subscription(
+fun TransactionSection(
   color: Color = Color.Cyan) {
+  var isVisible by remember {
+    mutableStateOf(false)
+  }
+  var iconState by remember {
+    mutableStateOf(Icons.Rounded.KeyboardArrowUp)
+  }
+
   Row(
     verticalAlignment = Alignment.CenterVertically,
     horizontalArrangement = Arrangement.SpaceBetween,
@@ -170,37 +211,176 @@ fun Subscription(
       .padding(horizontal = 15.dp, vertical = 20.dp)
       .fillMaxWidth()
   ) {
-    Column {
-      Text(
-        text = "Premium subscription",
-        fontStyle = FontStyle.Italic,
-        fontFamily = FontFamily.Default,
-        fontSize = 24.sp
-      )
-      Text(
-        text = "There is more.... ",
-        fontStyle = FontStyle.Italic,
-        fontFamily = FontFamily.Default,
-        fontSize = 15.sp
-      )
-    }
-    Box(
-      contentAlignment = Alignment.Center,
-      modifier = Modifier
-        .size(40.dp)
-        .clip(CircleShape)
-        .background(Blue)
-        .padding(10.dp)
+      Column(
+        modifier = Modifier
+          .clip(RoundedCornerShape(20.dp))
+          .background(MaterialTheme.colorScheme.inverseOnSurface)
+          .animateContentSize()
+      ) {
+
+        Row(
+          modifier = Modifier
+            .padding(16.dp)
+            .animateContentSize()
+            .fillMaxWidth(),
+          verticalAlignment = Alignment.CenterVertically
+        ) {
+
+          Box(modifier = Modifier
+            .clip(CircleShape)
+            .background(MaterialTheme.colorScheme.secondary)
+            .clickable {
+              isVisible = !isVisible
+              iconState = if (isVisible) {
+                Icons.Rounded.KeyboardArrowUp
+              } else {
+                Icons.Rounded.KeyboardArrowDown
+              }
+            }
+          ) {
+            Icon(
+              modifier = Modifier.size(25.dp),
+              imageVector = iconState,
+              contentDescription = "Transactions",
+              tint = MaterialTheme.colorScheme.onSecondary
+            )
+          }
+
+          Spacer(modifier = Modifier.width(20.dp))
+
+          Text(
+            text = "Transactions",
+            fontSize = 20.sp,
+            color = MaterialTheme.colorScheme.onSecondaryContainer,
+            fontWeight = FontWeight.Bold
+          )
+
+        }
+
+        Spacer(
+          modifier = Modifier
+            .height(1.dp)
+            .fillMaxWidth()
+            .background(MaterialTheme.colorScheme.secondaryContainer)
+        )
+
+        if (isVisible) {
+          BoxWithConstraints(
+            modifier = Modifier
+              .fillMaxSize()
+              .padding(horizontal = 16.dp)
+              .clip(RoundedCornerShape(topStart = 25.dp, topEnd = 25.dp))
+              .background(MaterialTheme.colorScheme.background)
+          ) {
+
+            val boxWithConstraintsScope = this
+            val width = boxWithConstraintsScope.maxWidth / 3
+
+            Column(
+              modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 20.dp)
+            ) {
+
+              Spacer(modifier = Modifier.height(16.dp))
+
+              Row(
+                modifier = Modifier.fillMaxWidth()
+              ) {
+
+                Text(
+                  modifier = Modifier.width(width),
+                  text = "Transactions",
+                  fontWeight = FontWeight.SemiBold,
+                  fontSize = 13.sp,
+                  color = MaterialTheme.colorScheme.onBackground
+                )
+
+
+                Text(
+                  modifier = Modifier.width(width),
+                  text = "Balance",
+                  fontWeight = FontWeight.SemiBold,
+                  fontSize = 14.sp,
+                  color = MaterialTheme.colorScheme.onBackground,
+                  textAlign = TextAlign.End
+                )
+
+              }
+
+              Spacer(modifier = Modifier.height(16.dp))
+
+              LazyColumn {
+                items(transaction.size) { index ->
+                  TransactionsItem(
+                    index = index,
+                    width = width
+                  )
+                }
+              }
+
+            }
+          }
+        }
+      }
+
+
+  }
+
+}
+
+@Composable
+fun TransactionsItem(index: Int, width: Dp) {
+  val currency = transaction[index]
+
+  Row(
+    modifier = Modifier
+      .fillMaxWidth()
+      .padding(bottom = 16.dp),
+    verticalAlignment = Alignment.CenterVertically
+  ) {
+
+    Row(
+      modifier = Modifier.width(width),
+      verticalAlignment = Alignment.CenterVertically
     ) {
-      Icon(
-        painter = painterResource(id = R.drawable.baseline_play_arrow_24),
-        contentDescription = "Play",
-        tint = White,
-        modifier = Modifier.size(16.dp)
+      Box(
+        modifier = Modifier
+          .clip(RoundedCornerShape(8.dp))
+          .padding(4.dp)
+      ) {
+        Icon(
+          modifier = Modifier.size(18.dp),
+          imageVector = currency.icon,
+          contentDescription =currency.name,
+          tint = Color.Black
+        )
+      }
+
+      Text(
+        modifier = Modifier
+          .padding(start = 10.dp),
+        text = currency.name,
+        fontWeight = FontWeight.Bold,
+        fontSize = 15.sp,
+        color = MaterialTheme.colorScheme.onBackground,
       )
     }
+
+    Text(
+      modifier = Modifier
+        .width(width)
+        .padding(start = 10.dp),
+      text = "ksh ${currency.balance}",
+      fontWeight = FontWeight.Bold,
+      fontSize = 15.sp,
+      color = MaterialTheme.colorScheme.onBackground,
+      textAlign = TextAlign.End
+    )
   }
 }
+
+
 
 @Composable
 @ExperimentalFoundationApi
