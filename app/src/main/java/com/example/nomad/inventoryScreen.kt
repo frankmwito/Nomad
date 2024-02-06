@@ -100,7 +100,7 @@ private val inventoryItems = listOf(
   InventoryItem(
     title = "Purchase",
     icon = Icons.Filled.Atm,
-    onClick = { /* Handle Purchase Order button click */ }
+    onClick = {}
   ),
   InventoryItem(
     title = "Receive",

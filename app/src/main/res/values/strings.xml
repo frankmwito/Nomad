@@ -7,4 +7,6 @@
     <string name="title_activity_settings">Settings</string>
     <string name="title_activity_home_screen1">HomeScreen1</string>
     <string name="title_activity_profile_screen">ProfileScreen</string>
+    <string name="title_activity_inventory_management">InventoryManagement</string>
+    <string name="title_activity_purchase_order">PurchaseOrder</string>
 </resources>
