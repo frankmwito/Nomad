@@ -1,5 +1,4 @@
 <resources>
-    <string name="app_name">Nomad</string>
     <string name="title_activity_main2">MainActivity2</string>
     <string name="title_activity_main3">MainActivity3</string>
     <string name="title_activity_management.kt">management.kt</string>
@@ -9,4 +8,9 @@
     <string name="title_activity_profile_screen">ProfileScreen</string>
     <string name="title_activity_inventory_management">InventoryManagement</string>
     <string name="title_activity_purchase_order">PurchaseOrder</string>
+    <string name="app_name">Mango</string>
+    <string name="title_activity_mango_services">MangoServices</string>
+    <string name="title_activity_faq">FAQ</string>
+    <string name="title_activity_privacy">Privacy</string>
+    <string name="title_activity_purchase" />
 </resources>

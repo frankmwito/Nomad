@@ -11,21 +11,43 @@
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
-        android:icon="@mipmap/orlandomagic"
-        android:label="Nomad"
-        android:roundIcon="@mipmap/orlandomagic"
+        android:icon="@mipmap/front"
+        android:label="Mango"
+        android:roundIcon="@mipmap/front"
         android:supportsRtl="true"
         android:theme="@style/Theme.Nomad"
         tools:targetApi="31">
         <activity
+            android:name=".InventoryManagementScreen"
+            android:exported="false"
+            android:label="@string/title_activity_inventory_management"
+            android:theme="@style/Theme.Nomad"
+            tools:ignore="Instantiatable" />
+        <activity
+            android:name=".Privacy"
+            android:exported="false"
+            android:label="@string/title_activity_privacy"
+            android:theme="@style/Theme.Nomad" />
+        <activity
+            android:name=".FAQ"
+            android:exported="false"
+            android:label="@string/title_activity_faq"
+            android:theme="@style/Theme.Nomad" />
+        <activity
+            android:name=".MangoServices"
+            android:exported="false"
+            android:label="@string/title_activity_mango_services"
+            android:theme="@style/Theme.Nomad" />
+        <activity
             android:name=".PurchaseOrder"
             android:exported="false"
             android:label="@string/title_activity_purchase_order"
-            android:theme="@style/Theme.Nomad" />
+            android:theme="@style/Theme.Nomad"
+            tools:ignore="Instantiatable" />
         <activity
-            android:name=".InventoryManagement"
+            android:name=".Purchase"
             android:exported="false"
-            android:label="@string/title_activity_inventory_management"
+            android:label="@string/title_activity_purchase"
             android:theme="@style/Theme.Nomad" />
 
         <receiver android:name=".GeofenceBroadcastReceiver" />
@@ -42,7 +64,7 @@
         <activity
             android:name=".MainActivity"
             android:exported="true"
-            android:label="Nomad"
+            android:label="Mango"
             android:theme="@style/Theme.Nomad"
             android:windowSoftInputMode="adjustResize">
             <intent-filter>

@@ -115,30 +115,30 @@ fun Home_screen() {
           Features(
             title = "No of Sales",
             iconId = R.drawable.sales,
-            lightColor = Color.Black,
+            lightColor =Color.Cyan,
             mediumColor = Color.White,
-            darkColor = Color.Gray
+            darkColor = Color.LightGray
           ),
           Features(
             title = "Sales Amount",
             iconId = R.drawable.estimate,
-            lightColor = Color.Black,
+            lightColor = Color.Cyan,
             mediumColor = Color.White,
-            darkColor = Color.Gray
+            darkColor = Color.LightGray
           ),
           Features(
             title = "Paid Amount",
             iconId = R.drawable.paid,
-            lightColor = Color.Black,
+            lightColor = Color.Cyan,
             mediumColor = Color.White,
-            darkColor = Color.Gray
+            darkColor = Color.LightGray
           ),
           Features(
             title = "Bills",
             iconId = R.drawable.bills,
-            lightColor = Color.Black,
+            lightColor = Color.Cyan,
             mediumColor = Color.White,
-            darkColor = Color.Gray
+            darkColor = Color.LightGray
           ),
         )
       )
@@ -158,7 +158,7 @@ fun GreetingSection() {
       verticalArrangement = Arrangement.Center
     ) {
       Image(
-        painter = painterResource(id = R.drawable.nomad1),
+        painter = painterResource(id = R.drawable.mango2),
         contentDescription = "null",
         modifier = Modifier.size(60.dp, 60.dp)
       )
@@ -185,7 +185,7 @@ fun GreetingSection() {
         fontSize = 18.sp,
       )
       Text(
-        text = "Nomad systems",
+        text = "Mango systems",
         fontSize = 18.sp,
       )
     }

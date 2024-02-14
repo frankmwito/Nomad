@@ -47,7 +47,6 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.nomad.ui.theme.NomadTheme
 import kotlinx.coroutines.delay
 
 class MainActivity : ComponentActivity() {
@@ -77,7 +76,7 @@ fun Navigation(){
           verticalArrangement = Arrangement.Center
         ) {
           Image(
-            painter = painterResource(id = R.drawable.nomad1),
+            painter = painterResource(id = R.drawable.mango2),
             contentDescription = "ADLIB",
             contentScale = ContentScale.Inside,
             modifier = Modifier.padding(bottom = 20.dp)
@@ -113,7 +112,7 @@ fun Navigation(){
                 }
               },
             )
-          Spacer(modifier = Modifier.height(20.dp))
+          Spacer(modifier = Modifier.height(12.dp))
             var password by remember {
               mutableStateOf("")
             }
@@ -186,7 +185,7 @@ fun SplashScreen(navController: NavController){
     navController.navigate("main_screen")
   }
   Box (contentAlignment = Alignment.Center, modifier = Modifier.fillMaxSize()){
-Image(painter = painterResource(id = R.drawable.nomad),
+Image(painter = painterResource(id = R.drawable.mango1),
   contentDescription =  "logo",
   modifier = Modifier.scale(scale.value)
 )

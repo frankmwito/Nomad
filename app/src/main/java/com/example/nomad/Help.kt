@@ -20,9 +20,9 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.material.Card
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowForwardIos
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
@@ -73,25 +73,28 @@ fun HelpFragment() {
         horizontalAlignment = Alignment.CenterHorizontally
       ) {
         Text(
-          text = "About Nomad",
+          text = "About Mango",
           fontSize = 18.sp,
           modifier = Modifier.weight(1f)
         )
         Spacer(modifier = Modifier.height(16.dp))
         SettingsItem(
-          title = "Nomad services",
+          title = "Mango services",
           icon = Icons.Default.ArrowForwardIos,
-          onClick = { /* Handle Frequently Asked Questions button click */ }
+          onClick = { val intent = Intent(ctx, MangoServices::class.java)
+            ctx.startActivity(intent)}
         )
         SettingsItem(
           title = "Frequently Asked Questions",
           icon = Icons.Default.ArrowForwardIos,
-          onClick = { /* Handle Frequently Asked Questions button click */ }
+          onClick = {val intent = Intent(ctx, FAQ::class.java)
+            ctx.startActivity(intent)}
         )
         SettingsItem(
           title = "Privacy Policy",
           icon = Icons.Default.ArrowForwardIos,
-          onClick = { /* Handle Privacy Policy button click */ }
+          onClick = { val intent = Intent(ctx, Privacy::class.java)
+            ctx.startActivity(intent) }
         )
       }
     }
