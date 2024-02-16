@@ -4,12 +4,29 @@ plugins {
 }
 
 android {
+  configurations {
+    all {
+      resolutionStrategy.force("com.google.protobuf:protobuf-java:3.11.4")
+      exclude(module = "proto-google-common-protos")
+      exclude(module = "protolite-well-known-types")
+      exclude(module = "guava")
+      exclude(group = "com.google.protobuf", module = "protobuf-javalite")
+      resolutionStrategy.force("org.slf4j:slf4j-log4j12:1.7.32")
+      exclude (group = "org.slf4j", module = "slf4j-android")
+      exclude (group = "org.slf4j", module = "slf4j-log4j12")
+    }
+    /*implementation('org.some.library:library-name:version') {
+    exclude group: 'org.slf4j', module: 'slf4j-android'
+    exclude group: 'org.slf4j', module: 'slf4j-log4j12'
+}
+implementation 'org.slf4j:slf4j-api:1.7.36'*/
+  }
   namespace = "com.example.nomad"
   compileSdk = 34
 
   defaultConfig {
     applicationId = "com.example.nomad"
-    minSdk = 24
+    minSdk = 26
     targetSdk = 34
     versionCode = 1
     versionName = "1.0"
@@ -40,6 +57,7 @@ android {
   composeOptions {
     kotlinCompilerExtensionVersion = "1.5.8"
   }
+
   packagingOptions {
     resources {
       excludes += "/META-INF/{AL2.0,LGPL2.1}"
@@ -47,15 +65,26 @@ android {
       excludes += "/META-INF/io.netty.versions.properties"
       excludes += "/META-INF/INDEX.LIST"
       excludes += "META-INF/androidx.compose.material3_material3.version"
+      excludes += "/com.google.type.TimeZoneOrBuilder.class"
+      excludes += "/com.google.protobuf"
     }
   }
-  buildToolsVersion = "34.0.0"
+
+
+    buildToolsVersion = "34.0.0"
+
 }
 
 dependencies {
 
+  implementation ("org.slf4j:slf4j-log4j12:1.7.32")
+  implementation ("com.fasterxml.jackson.datatype:jackson-datatype-joda:2.13.0")
+  implementation("ch.qos.logback:logback-classic:1.2.6")
+  implementation("org.apache.logging.log4j:log4j-api:2.14.1")
+  implementation("com.google.firebase:protolite-well-known-types:18.0.0")
+  annotationProcessor("org.apache.logging.log4j:log4j-core:2.14.1")
   implementation ("androidx.core:core-ktx:1.12.0")
-  implementation ("androidx.compose.material3:material3:1.1.2")
+  implementation ("androidx.compose.material3:material3:1.2.0")
   implementation ("androidx.lifecycle:lifecycle-runtime-ktx:2.7.0")
   implementation ("androidx.activity:activity-compose:1.8.2")
   implementation (platform("androidx.compose:compose-bom:2023.08.00"))
@@ -91,9 +120,9 @@ dependencies {
   implementation ("org.jetbrains.exposed:exposed-dao:0.38.2")
   implementation ("org.jetbrains.exposed:exposed-jdbc:0.38.2")
   implementation ("org.jetbrains.exposed:exposed-jodatime:0.38.2")
-  implementation ("com.google.firebase:protolite-well-known-types:18.0.0")
   implementation ("org.chromium.net:cronet-embedded:119.6045.31")
   implementation ("com.squareup.okhttp3:okhttp:4.11.0")
+  implementation ("mysql:mysql-connector-java:8.0.23")
   implementation ("androidx.lifecycle:lifecycle-viewmodel-ktx:2.7.0")
   implementation ("androidx.lifecycle:lifecycle-livedata-ktx:2.7.0")
   implementation ("androidx.recyclerview:recyclerview:1.3.2")
@@ -117,6 +146,7 @@ dependencies {
   implementation ("androidx.compose.foundation:foundation-android:1.6.1")
   implementation ("com.google.ai.client.generativeai:generativeai:0.1.2")
   testImplementation ("junit:junit:4.13.2")
+  implementation (platform("org.jetbrains.kotlin:kotlin-bom:1.8.0"))
   androidTestImplementation ("androidx.test.ext:junit:1.1.5")
   androidTestImplementation ("androidx.test.espresso:espresso-core:3.5.1")
   androidTestImplementation(platform("androidx.compose:compose-bom:2023.08.00"))
@@ -132,4 +162,5 @@ dependencies {
   androidTestImplementation(platform("androidx.compose:compose-bom:2023.08.00"))
   debugImplementation ("androidx.compose.ui:ui-tooling")
   debugImplementation ("androidx.compose.ui:ui-test-manifest")
+
 }

@@ -1,7 +1,6 @@
 package com.example.nomad
 
 // Backend.kt
-
 import io.ktor.http.HttpStatusCode
 import io.ktor.serialization.jackson.jackson
 import io.ktor.server.application.Application
@@ -17,8 +16,11 @@ import io.ktor.server.routing.get
 import io.ktor.server.routing.routing
 import org.jetbrains.exposed.dao.id.IntIdTable
 import org.jetbrains.exposed.sql.Database
+import org.jetbrains.exposed.sql.jodatime.date
 import org.jetbrains.exposed.sql.selectAll
 import org.jetbrains.exposed.sql.transactions.transaction
+import org.joda.time.DateTime
+
 
 data class InventoryManagement(
   val itemName: String,
@@ -32,30 +34,38 @@ object InventoryManagementTable : IntIdTable("inventory_management") {
   val itemPrice = double("item_price")
   val itemDescription = text("item_description")
   val itemCategory = text("item_category")
+  // Add 'id' column explicitly
+
+  // Other columns...
 }
+
+
 
 data class PurchaseOrder(
   val id: Int,
   val distributorName: String,
   val contactInfo: Int,
   val orderId: Int,
-  val deliveryDate: String,
+  val deliveryDate: DateTime,  // Change the type to java.sql.Date
   val itemName: String,
   val itemCategory: String,
   val itemPrice: Double,
   val paymentType: String
 )
 
+
+
 object PurchaseOrderTable : IntIdTable("purchase_order") {
   val distributorName = varchar("distributor_name", 255)
   val contactInfo = integer("contact_info")
   val orderId = integer("order_id")
-  val deliveryDate = varchar("delivery_date", 255)
+  val deliveryDate = date("delivery_date")
   val itemName = varchar("item_name", 255)
   val itemCategory = varchar("item_category", 255)
   val itemPrice = double("item_price")
   val paymentType = varchar("payment_type", 255)
 }
+
 
 data class Sales(
   val id: Int,
@@ -126,6 +136,7 @@ fun Application.module() {
 }
 
 fun main() {
+
   embeddedServer(Netty, port = 8080, host = "0.0.0.0") {
     module()
   }.start(wait = true)
