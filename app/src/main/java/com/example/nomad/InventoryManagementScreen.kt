@@ -13,8 +13,12 @@ import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -41,37 +45,32 @@ fun InventoryManagement() {
       verticalArrangement = Arrangement.Center,
       horizontalAlignment = Alignment.CenterHorizontally
     ) {
-      // Fetch the inventory data from the ViewModel
-      LaunchedEffect(Unit) {
-        viewModel.fetchInventoryData()
-      }
-
       // Display the inventory data using the LiveData
-      val inventoryData = viewModel.inventory.value
-      if (!inventoryData.isNullOrEmpty()) {
+      val inventoryData by viewModel.inventory.observeAsState()
+      if (inventoryData != null) {
         Column(
           verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-          inventoryData.forEach { item ->
+          inventoryData!!.forEach { item ->
             Text(
               text = "Item Name: ${item.itemName ?: "N/A"}",
               style = MaterialTheme.typography.h6,
               textAlign = TextAlign.Center
             )
             Text(
-              text = "Item Price: ${item.itemPrice ?: 0.0}",
-              style = MaterialTheme.typography.body1,
+              text = "${item.itemPrice?.toFloat() ?: 0.0f}",
+              style = MaterialTheme.typography.h6,
               textAlign = TextAlign.Center
             )
             Text(
               text = "Item Description: ${item.itemDescription ?: "N/A"}",
-              style = MaterialTheme.typography.body1,
+              style = MaterialTheme.typography.h6,
               textAlign = TextAlign.Center,
               modifier = Modifier.fillMaxWidth()
             )
             Text(
               text = "Item Category: ${item.itemCategory ?: "N/A"}",
-              style = MaterialTheme.typography.body1,
+              style = MaterialTheme.typography.h6,
               textAlign = TextAlign.Center,
               modifier = Modifier.fillMaxWidth()
             )

@@ -53,6 +53,7 @@ implementation 'org.slf4j:slf4j-api:1.7.36'*/
   buildFeatures {
     compose = true
     buildConfig = true
+    viewBinding = true
   }
   composeOptions {
     kotlinCompilerExtensionVersion = "1.5.8"

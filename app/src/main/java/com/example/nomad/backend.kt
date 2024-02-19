@@ -20,6 +20,12 @@ import org.jetbrains.exposed.sql.jodatime.date
 import org.jetbrains.exposed.sql.selectAll
 import org.jetbrains.exposed.sql.transactions.transaction
 import org.joda.time.DateTime
+import io.ktor.server.engine.embeddedServer
+import io.ktor.server.netty.NettyApplicationEngine
+import io.ktor.util.KtorExperimentalAPI
+import org.jetbrains.exposed.sql.*
+import org.jetbrains.exposed.sql.transactions.transaction
+import java.time.LocalDate
 
 
 data class InventoryManagement(
@@ -116,24 +122,77 @@ fun Application.module() {
   }
 
 
+
   routing {
     get("/inventory-management") {
-      call.respond(transaction { InventoryManagementTable.selectAll().map { InventoryManagement(it[InventoryManagementTable.itemName], it[InventoryManagementTable.itemPrice], it[InventoryManagementTable.itemDescription], it[InventoryManagementTable.itemCategory]) } })
+      val inventoryManagementList = transaction {
+        InventoryManagementTable.selectAll().map {
+          InventoryManagement(
+            it[InventoryManagementTable.itemName],
+            it[InventoryManagementTable.itemPrice],
+            it[InventoryManagementTable.itemDescription],
+            it[InventoryManagementTable.itemCategory]
+          )
+        }
+      }
+      call.respond(inventoryManagementList)
+      this@module.log.info("Fetched ${inventoryManagementList.size} inventory management items")
     }
 
     get("/purchase-order") {
-      call.respond(transaction { PurchaseOrderTable.selectAll().map { PurchaseOrder(it[PurchaseOrderTable.id].value, it[PurchaseOrderTable.distributorName], it[PurchaseOrderTable.contactInfo], it[PurchaseOrderTable.orderId], it[PurchaseOrderTable.deliveryDate], it[PurchaseOrderTable.itemName], it[PurchaseOrderTable.itemCategory], it[PurchaseOrderTable.itemPrice], it[PurchaseOrderTable.paymentType]) } })
+      val purchaseOrderList = transaction {
+        PurchaseOrderTable.selectAll().map {
+          PurchaseOrder(
+            it[PurchaseOrderTable.id].value,
+            it[PurchaseOrderTable.distributorName],
+            it[PurchaseOrderTable.contactInfo],
+            it[PurchaseOrderTable.orderId],
+            it[PurchaseOrderTable.deliveryDate],
+            it[PurchaseOrderTable.itemName],
+            it[PurchaseOrderTable.itemCategory],
+            it[PurchaseOrderTable.itemPrice],
+            it[PurchaseOrderTable.paymentType]
+          )
+        }
+      }
+      call.respond(purchaseOrderList)
+      this@module.log.info("Fetched ${purchaseOrderList.size} purchase orders")
     }
 
     get("/sales") {
-      call.respond(transaction { SalesTable.selectAll().map { Sales(it[SalesTable.id].value, it[SalesTable.numberOfSales], it[SalesTable.salesAmount], it[SalesTable.paidAmount], it[SalesTable.bills], it[SalesTable.transactionType], it[SalesTable.itemName]) } })
+      val salesList = transaction {
+        SalesTable.selectAll().map {
+          Sales(
+            it[SalesTable.id].value,
+            it[SalesTable.numberOfSales],
+            it[SalesTable.salesAmount],
+            it[SalesTable.paidAmount],
+            it[SalesTable.bills],
+            it[SalesTable.transactionType],
+            it[SalesTable.itemName]
+          )
+        }
+      }
+      call.respond(salesList)
+      this@module.log.info("Fetched ${salesList.size} sales")
     }
 
     get("/users") {
-      call.respond(transaction { UsersTable.selectAll().map { Users(it[UsersTable.id].value, it[UsersTable.username], it[UsersTable.password]) } })
+      val usersList = transaction {
+        UsersTable.selectAll().map {
+          Users(
+            it[UsersTable.id].value,
+            it[UsersTable.username],
+            it[UsersTable.password]
+          )
+        }
+      }
+      call.respond(usersList)
+      this@module.log.info("Fetched ${usersList.size} users")
     }
   }
 }
+
 
 fun main() {
 

@@ -12,14 +12,8 @@ interface ApiInterface {
   suspend fun getAllPurchaseOrders(): List<PurchaseOrder>
 
   @GET("/sales")
-  suspend fun getAllSales(
-    @Query("start_date") startDate: String? = null,
-    @Query("end_date") endDate: String? = null
-  ): List<Sales>
+  suspend fun getAllSales(): List<Sales>
 
   @GET("/users")
-  suspend fun getAllUsers(
-    @Query("role") role: String? = null,
-    @Query("status") status: String? = null
-  ): List<Users>
+  suspend fun getAllUsers(): List<Users>
 }
