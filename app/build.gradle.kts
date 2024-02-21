@@ -79,6 +79,9 @@ implementation 'org.slf4j:slf4j-api:1.7.36'*/
 dependencies {
 
   implementation ("org.slf4j:slf4j-log4j12:1.7.32")
+  implementation("androidx.lifecycle:lifecycle-runtime-compose:2.6.2")
+  implementation("androidx.compose.runtime:runtime-livedata:1.6.1")
+  implementation("androidx.compose.runtime:runtime-rxjava2:1.6.1")
   implementation ("com.fasterxml.jackson.datatype:jackson-datatype-joda:2.13.0")
   implementation("ch.qos.logback:logback-classic:1.2.6")
   implementation("org.apache.logging.log4j:log4j-api:2.14.1")
@@ -90,6 +93,7 @@ dependencies {
   implementation ("androidx.activity:activity-compose:1.8.2")
   implementation (platform("androidx.compose:compose-bom:2023.08.00"))
   implementation ("androidx.compose.ui:ui")
+  implementation ("androidx.lifecycle:lifecycle-runtime-ktx:2.4.0")
   implementation ("androidx.compose.material:material:1.6.1")
   implementation ("androidx.compose.ui:ui-graphics")
   implementation ("androidx.compose.ui:ui-tooling:1.6.1")

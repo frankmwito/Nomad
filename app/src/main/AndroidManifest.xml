@@ -25,6 +25,12 @@
             android:theme="@style/Theme.Nomad"
             tools:ignore="Instantiatable" />
         <activity
+            android:name=".InventoryScreen"
+            android:exported="false"
+            android:label="InventoryScreen"
+            android:theme="@style/Theme.Nomad"
+            tools:ignore="Instantiatable" />
+        <activity
             android:name=".Privacy"
             android:exported="false"
             android:label="@string/title_activity_privacy"
