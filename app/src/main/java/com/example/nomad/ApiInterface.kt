@@ -20,7 +20,7 @@ interface ApiInterface {
   @GET("/requisition")
   suspend fun getALLRequisition():List<Requisition>
 
-  @GET("/receive_goods")
+  @GET("/receivegoods")
   suspend fun getALLReceiveGoods():List<ReceiveGoods>
 
   @GET("/users")

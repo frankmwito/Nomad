@@ -15,4 +15,10 @@
     <string name="title_activity_purchase" />
     <string name="title_activity_stock_management_view_model">StockManagementViewModel</string>
     <string name="title_activity_stock_management_screen">StockManagementScreen</string>
+    <string name="title_activity_requisition_view_model">RequisitionViewModel</string>
+    <string name="title_activity_requisition_screen">RequisitionScreen</string>
+    <string name="title_activity_receive_goods_view_model">ReceiveGoodsViewModel</string>
+    <string name="title_activity_sales_view_model">SalesViewModel</string>
+    <string name="title_activity_sales_screen">SalesScreen</string>
+    <string name="title_activity_receive_goods_screen">ReceiveGoodsScreen</string>
 </resources>

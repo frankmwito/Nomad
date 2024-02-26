@@ -116,7 +116,8 @@ fun MyButtons() {
         title = "Sales",
         icon = Icons.Filled.AutoGraph,
         image = painterResource(id = R.drawable.tales),
-        onClick = { /* handle button click here */ }
+        onClick = { val intent = Intent(context, SalesScreen::class.java)
+          context.startActivity(intent) }
       )
     }
     Spacer(modifier = Modifier.height(8.dp))
@@ -142,7 +143,8 @@ fun MyButtons() {
         title = "Stock Management",
         icon = Icons.Filled.AddShoppingCart,
         image = painterResource(id = R.drawable.stockmanagement),
-        onClick = { /* handle button click here */ }
+        onClick = { val intent = Intent(context, StockManagementScreen::class.java)
+          context.startActivity(intent) }
       )
     }
     Spacer(modifier = Modifier.height(8.dp))
@@ -156,7 +158,8 @@ fun MyButtons() {
         title = "Receive Goods",
         icon = Icons.Filled.Bolt,
         image = painterResource(id = R.drawable.receivegoods),
-        onClick = { /* handle button click here */ }
+        onClick = { val intent = Intent(context, ReceiveGoodsScreen::class.java)
+          context.startActivity(intent) }
       )
     }
     Spacer(modifier = Modifier.height(8.dp))
@@ -165,7 +168,8 @@ fun MyButtons() {
         title = "Requisition Form",
         icon = Icons.Filled.Download,
         image = painterResource(id = R.drawable.requisition),
-        onClick = { /* handle button click here */ }
+        onClick = {val intent = Intent(context, RequisitionScreen::class.java)
+          context.startActivity(intent) }
       )
     }
   }

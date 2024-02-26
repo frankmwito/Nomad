@@ -42,7 +42,7 @@ object StockManagementTable : IntIdTable("stock_management") {
   val category = text("category")
 }
 data class Requisition(
-  val requisitionId: Int,
+  /*val requisitionId: Int,*/
   val requesterName: String,
   val requesterContact: String,
   val itemDescription: String,
@@ -60,6 +60,7 @@ data class Requisition(
 )
 
 object RequisitionTable : IntIdTable("requisition") {
+  /*val requisitionId = integer("requisition_id").entityId()*/
   val requesterName = varchar("requester_name", 255)
   val requesterContact = varchar("requester_contact", 20)
   val itemDescription = varchar("item_description", 255)
@@ -137,7 +138,7 @@ object PurchaseOrderTable : IntIdTable("purchase_order") {
 
 data class Sales(
   val id: Int,
-  val numberOfSales: Int,
+  val noofSales: Int,
   val salesAmount: Double,
   val paidAmount: Double,
   val bills: Double,
@@ -146,7 +147,7 @@ data class Sales(
 )
 
 object SalesTable : IntIdTable("sales") {
-  val numberOfSales = integer("number_of_sales")
+  val noofsales = integer("no_of_sales")
   val salesAmount = double("sales_amount")
   val paidAmount = double("paid_amount")
   val bills = double("bills")
@@ -188,7 +189,7 @@ fun Application.module() {
 
 
   routing {
-    get("/inventory-management") {
+     get("/inventory-management") {
       val inventoryManagementList = transaction {
         InventoryManagementTable.selectAll().map {
           InventoryManagement(
@@ -227,7 +228,7 @@ fun Application.module() {
         SalesTable.selectAll().map {
           Sales(
             it[SalesTable.id].value,
-            it[SalesTable.numberOfSales],
+            it[SalesTable.noofsales],
             it[SalesTable.salesAmount],
             it[SalesTable.paidAmount],
             it[SalesTable.bills],
@@ -239,7 +240,7 @@ fun Application.module() {
       call.respond(salesList)
       this@module.log.info("Fetched ${salesList.size} sales")
     }
-    get("/receive-goods") {
+    get("/receivegoods") {
       val receivegoodsList = transaction {
         ReceiveGoodsTable.selectAll().map {
           ReceiveGoods(
@@ -277,7 +278,7 @@ fun Application.module() {
       val requisitionList = transaction {
         RequisitionTable .selectAll().map {
           Requisition(
-            it[RequisitionTable.id].value,
+            /*it[RequisitionTable.requisitionId].value,*/
             it[RequisitionTable.requesterName],
             it[RequisitionTable.requesterContact],
             it[RequisitionTable.itemDescription],
