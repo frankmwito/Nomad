@@ -13,4 +13,6 @@
     <string name="title_activity_faq">FAQ</string>
     <string name="title_activity_privacy">Privacy</string>
     <string name="title_activity_purchase" />
+    <string name="title_activity_stock_management_view_model">StockManagementViewModel</string>
+    <string name="title_activity_stock_management_screen">StockManagementScreen</string>
 </resources>
