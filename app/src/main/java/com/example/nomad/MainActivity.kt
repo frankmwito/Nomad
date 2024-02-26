@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Lock
@@ -80,6 +81,7 @@ fun Navigation(){
             contentDescription = "ADLIB",
             contentScale = ContentScale.Inside,
             modifier = Modifier.padding(bottom = 20.dp)
+              .size(250.dp, 250.dp)
           )
           Spacer(modifier = Modifier.height(20.dp))
 

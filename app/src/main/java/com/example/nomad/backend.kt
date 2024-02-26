@@ -1,6 +1,8 @@
 package com.example.nomad
 
 // Backend.kt
+/*import com.example.nomad.PurchaseOrderTable.nullable*/
+import com.fasterxml.jackson.datatype.joda.JodaModule
 import io.ktor.http.HttpStatusCode
 import io.ktor.serialization.jackson.jackson
 import io.ktor.server.application.Application
@@ -16,17 +18,80 @@ import io.ktor.server.routing.get
 import io.ktor.server.routing.routing
 import org.jetbrains.exposed.dao.id.IntIdTable
 import org.jetbrains.exposed.sql.Database
-import org.jetbrains.exposed.sql.jodatime.date
 import org.jetbrains.exposed.sql.selectAll
 import org.jetbrains.exposed.sql.transactions.transaction
-import org.joda.time.DateTime
-import io.ktor.server.engine.embeddedServer
-import io.ktor.server.netty.NettyApplicationEngine
-import io.ktor.util.KtorExperimentalAPI
-import org.jetbrains.exposed.sql.*
-import org.jetbrains.exposed.sql.transactions.transaction
-import java.time.LocalDate
 
+data class StockManagement(
+  val id: Int,
+  val itemName: String,
+  val currentStock: Int,
+  val minStockLevel: Int,
+  val maxStockLevel: Int,
+  val itemPrice: Double,
+  val supplierName: String,
+  val category: String
+)
+
+object StockManagementTable : IntIdTable("stock_management") {
+  val itemName = varchar("item_name", 255)
+  val currentStock = integer("current_stock")
+  val minStockLevel = integer("min_stock_level")
+  val maxStockLevel = integer("max_stock_level")
+  val itemPrice = double("item_price")
+  val supplierName = varchar("supplier_name", 255)
+  val category = text("category")
+}
+data class Requisition(
+  val requisitionId: Int,
+  val requesterName: String,
+  val requesterContact: String,
+  val itemDescription: String,
+  val quantity: Int,
+  val unitOfMeasure: String,
+  val costCenter: String,
+  val budgetAllocation: Double,
+  val deliveryAddress: String,
+  /*val requiredDeliveryDate: String,*/
+  val preferredVendor: String,
+  val justification: String,
+  val requisitionStatus: String,
+  val purchaseOrderId: Int?,
+  /*val createdAt: String*/
+)
+
+object RequisitionTable : IntIdTable("requisition") {
+  val requesterName = varchar("requester_name", 255)
+  val requesterContact = varchar("requester_contact", 20)
+  val itemDescription = varchar("item_description", 255)
+  val quantity = integer("quantity")
+  val unitOfMeasure = varchar("unit_of_measure", 20)
+  val costCenter = varchar("cost_center", 50)
+  val budgetAllocation = decimal("budget_allocation", 10, 2)
+  val deliveryAddress = varchar("delivery_address", 255)
+
+  /*val requiredDeliveryDate = date("required_delivery_date")*/
+  val preferredVendor = varchar("preferred_vendor", 255)
+  val justification = text("justification")
+  val requisitionStatus = varchar("requisition_status", 20)
+  val purchaseOrderId = integer("purchase_order_id").nullable()
+  /*val createdAt = timestamp("created_at")*/
+}
+data class ReceiveGoods(
+  val id: Int,
+  /*val receivedDate: String,*/
+  val itemName: String,
+  val receivedQuantity: Int,
+  val supplierName: String,
+  val invoiceNumber: String
+)
+
+object ReceiveGoodsTable : IntIdTable("receivegoods") {
+  /*val receivedDate = date("received_date")*/
+  val itemName = varchar("item_name", 255)
+  val receivedQuantity = integer("received_quantity")
+  val supplierName = varchar("supplier_name", 255)
+  val invoiceNumber = varchar("invoice_number", 255)
+}
 
 data class InventoryManagement(
   val itemName: String,
@@ -52,26 +117,23 @@ data class PurchaseOrder(
   val distributorName: String,
   val contactInfo: Int,
   val orderId: Int,
-  val deliveryDate: DateTime,  // Change the type to java.sql.Date
+ /* val deliveryDate: Long?, // nullable java.sql.Date*/
   val itemName: String,
   val itemCategory: String,
   val itemPrice: Double,
   val paymentType: String
 )
 
-
-
 object PurchaseOrderTable : IntIdTable("purchase_order") {
   val distributorName = varchar("distributor_name", 255)
   val contactInfo = integer("contact_info")
   val orderId = integer("order_id")
-  val deliveryDate = date("delivery_date")
+  /*val deliveryDate = long("delivery_date").nullable() // nullable Long column*/
   val itemName = varchar("item_name", 255)
   val itemCategory = varchar("item_category", 255)
   val itemPrice = double("item_price")
   val paymentType = varchar("payment_type", 255)
 }
-
 
 data class Sales(
   val id: Int,
@@ -111,7 +173,9 @@ fun Application.module() {
     password = "Frank@1919")
 
   install(ContentNegotiation) {
-    jackson {}
+    jackson {
+      registerModule(JodaModule())
+    }
   }
 
   install(StatusPages) {
@@ -147,7 +211,6 @@ fun Application.module() {
             it[PurchaseOrderTable.distributorName],
             it[PurchaseOrderTable.contactInfo],
             it[PurchaseOrderTable.orderId],
-            it[PurchaseOrderTable.deliveryDate],
             it[PurchaseOrderTable.itemName],
             it[PurchaseOrderTable.itemCategory],
             it[PurchaseOrderTable.itemPrice],
@@ -176,6 +239,65 @@ fun Application.module() {
       call.respond(salesList)
       this@module.log.info("Fetched ${salesList.size} sales")
     }
+    get("/receive-goods") {
+      val receivegoodsList = transaction {
+        ReceiveGoodsTable.selectAll().map {
+          ReceiveGoods(
+            it[ReceiveGoodsTable.id].value,
+           /*row[ReceiveGoodsTable.receivedDate].toString(),*/
+            it[ReceiveGoodsTable.itemName],
+            it[ReceiveGoodsTable.receivedQuantity],
+            it[ReceiveGoodsTable.supplierName],
+            it[ReceiveGoodsTable.invoiceNumber]
+          )
+        }
+      }
+      call.respond(receivegoodsList)
+      this@module.log.info("Fetched ${receivegoodsList.size} sales")
+    }
+    get("/stock_management") {
+      val stockmanagementList = transaction {
+        StockManagementTable.selectAll().map {
+          StockManagement(
+            it[StockManagementTable.id].value,
+            it[StockManagementTable.itemName],
+            it[StockManagementTable.currentStock],
+            it[StockManagementTable.minStockLevel],
+            it[StockManagementTable.maxStockLevel],
+            it[StockManagementTable.itemPrice],
+            it[StockManagementTable.supplierName],
+            it[StockManagementTable.category]
+          )
+        }
+      }
+      call.respond(stockmanagementList)
+      this@module.log.info("Fetched ${stockmanagementList.size} sales")
+    }
+    get("/requisition") {
+      val requisitionList = transaction {
+        RequisitionTable .selectAll().map {
+          Requisition(
+            it[RequisitionTable.id].value,
+            it[RequisitionTable.requesterName],
+            it[RequisitionTable.requesterContact],
+            it[RequisitionTable.itemDescription],
+            it[RequisitionTable.quantity],
+            it[RequisitionTable.unitOfMeasure],
+            it[RequisitionTable.costCenter],
+            it[RequisitionTable.budgetAllocation].toDouble(),
+            it[RequisitionTable.deliveryAddress],
+            /*row[RequisitionTable.requiredDeliveryDate].toString(),*/
+            it[RequisitionTable.preferredVendor],
+            it[RequisitionTable.justification],
+            it[RequisitionTable.requisitionStatus],
+            it[RequisitionTable.purchaseOrderId]
+            /*row[RequisitionTable.createdAt].toString()*/
+          )
+        }
+      }
+      call.respond(requisitionList)
+      this@module.log.info("Fetched ${requisitionList.size} sales")
+    }
 
     get("/users") {
       val usersList = transaction {
@@ -192,6 +314,7 @@ fun Application.module() {
     }
   }
 }
+
 
 
 fun main() {

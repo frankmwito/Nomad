@@ -14,6 +14,15 @@ interface ApiInterface {
   @GET("/sales")
   suspend fun getAllSales(): List<Sales>
 
+  @GET("/stock_management")
+  suspend fun getALLStockManagement():List<StockManagement>
+
+  @GET("/requisition")
+  suspend fun getALLRequisition():List<Requisition>
+
+  @GET("/receive_goods")
+  suspend fun getALLReceiveGoods():List<ReceiveGoods>
+
   @GET("/users")
   suspend fun getAllUsers(): List<Users>
 }
