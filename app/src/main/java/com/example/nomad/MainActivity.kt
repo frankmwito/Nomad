@@ -85,6 +85,8 @@ fun Navigation(){
           )
           Spacer(modifier = Modifier.height(20.dp))
 
+          var isInvalidCredentials by remember { mutableStateOf(false) }
+
             var username by remember {
               mutableStateOf("")
             }
@@ -160,11 +162,22 @@ fun Navigation(){
               else PasswordVisualTransformation()
             )
           Spacer(modifier = Modifier.height(20.dp))
-            TextButton(onClick = {mContext.startActivity(Intent(mContext, HomeScreen::class.java)) }) {
-              Text(text = "Login")
+          TextButton(
+            onClick = {
+              if (username == "Admin" && password == "1919") {
+                mContext.startActivity(Intent(mContext, HomeScreen::class.java))
+              } else {
+                isInvalidCredentials = true
+              }
             }
+          ) {
+            Text(text = "Login")
+          }
+          if (isInvalidCredentials) {
+            Text(text = "Invalid username or password", color = Color.Blue)
           }
         }
+      }
       }
     }
   }

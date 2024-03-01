@@ -163,12 +163,7 @@ fun RequisitionItemCard(item: Requisition, onItemClick: (Requisition) -> Unit) {
         text = "Requester Name: ${item.requesterName}",
         style = MaterialTheme.typography.headlineMedium,
         textAlign = TextAlign.Start
-      )/*
-      Text(
-        text = "Requisition Id: ${item.requisitionId}",
-        style = MaterialTheme.typography.headlineMedium,
-        textAlign = TextAlign.Start
-      )*/
+      )
       Text(
         text = "Requisition Status: ${item.requisitionStatus}",
         style = MaterialTheme.typography.headlineMedium,
@@ -186,6 +181,11 @@ fun RequisitionItemCard(item: Requisition, onItemClick: (Requisition) -> Unit) {
       )
       Text(
         text = "Requester Contact: ${item.requesterContact}",
+        style = MaterialTheme.typography.headlineMedium,
+        textAlign = TextAlign.Start
+      )
+      Text(
+        text = "Requester Id: ${item.requisitionId}",
         style = MaterialTheme.typography.headlineMedium,
         textAlign = TextAlign.Start
       )
@@ -331,6 +331,7 @@ fun SearchBar(viewModel: RequisitionViewModel) {
     )
     IconButton(
       onClick = {
+        searchQuery = ""
         viewModel.searchItems(searchQuery)
       }
     ) {

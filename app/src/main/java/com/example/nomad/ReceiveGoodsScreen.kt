@@ -245,6 +245,7 @@ fun SearchBar(viewModel: ReceiveGoodsViewModel) {
     )
     IconButton(
       onClick = {
+        searchQuery = ""
         viewModel.searchItems(searchQuery)
       }
     ) {

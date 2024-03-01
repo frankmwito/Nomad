@@ -21,11 +21,11 @@ import kotlinx.coroutines.launch
 
 // ReceiveGoodsViewModel.kt
 class ReceiveGoodsViewModel : ViewModel() {
-  private val _receiveGoods: MutableLiveData<List<ReceiveGoods>> = MutableLiveData()
-  val receiveGoods: LiveData<List<ReceiveGoods>> = _receiveGoods
+  private val _receiveGoods: MutableLiveData<List<ReceiveGoods>> = MutableLiveData<List<ReceiveGoods>>()
+  private val receiveGoods: LiveData<List<ReceiveGoods>> = _receiveGoods
 
-  private val _filteredAndSortedReceiveGoods = MutableLiveData<List<ReceiveGoods>>()
-  val filteredAndSortedReceiveGoods: LiveData<List<ReceiveGoods>> = _filteredAndSortedReceiveGoods
+  private val _filteredAndSortedReceiveGoods = mutableStateOf<List<ReceiveGoods>>(emptyList())
+  val filteredAndSortedReceiveGoods: State<List<ReceiveGoods>> = _filteredAndSortedReceiveGoods
 
   private val _searchQuery = MutableLiveData<String>()
   val searchQuery: LiveData<String> = _searchQuery

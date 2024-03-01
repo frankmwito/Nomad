@@ -280,6 +280,7 @@ fun SearchBar(viewModel: SalesViewModel) {
     )
     IconButton(
       onClick = {
+        searchQuery = ""
         viewModel.searchItems(searchQuery)
       }
     ) {

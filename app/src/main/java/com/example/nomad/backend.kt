@@ -42,8 +42,8 @@ object StockManagementTable : IntIdTable("stock_management") {
   val category = text("category")
 }
 data class Requisition(
-
   val requesterName: String,
+  val requisitionId: Int,
   val requesterContact: String,
   val itemDescription: String,
   val quantity: Int,
@@ -51,17 +51,15 @@ data class Requisition(
   val costCenter: String,
   val budgetAllocation: Double,
   val deliveryAddress: String,
-  /*val requiredDeliveryDate: String,*/
   val preferredVendor: String,
   val justification: String,
   val requisitionStatus: String,
   val purchaseOrderId: Int?,
-  /*val createdAt: String*/
 )
 
 object RequisitionTable : IntIdTable("requisition") {
-
   val requesterName = varchar("requester_name", 255)
+  val requisitionId = integer("requisition_id")
   val requesterContact = varchar("requester_contact", 20)
   val itemDescription = varchar("item_description", 255)
   val quantity = integer("quantity")
@@ -69,13 +67,10 @@ object RequisitionTable : IntIdTable("requisition") {
   val costCenter = varchar("cost_center", 50)
   val budgetAllocation = decimal("budget_allocation", 10, 2)
   val deliveryAddress = varchar("delivery_address", 255)
-
-  /*val requiredDeliveryDate = date("required_delivery_date")*/
   val preferredVendor = varchar("preferred_vendor", 255)
   val justification = text("justification")
   val requisitionStatus = varchar("requisition_status", 20)
   val purchaseOrderId = integer("purchase_order_id").nullable()
-  /*val createdAt = timestamp("created_at")*/
 }
 data class ReceiveGoods(
   val id: Int,
@@ -278,8 +273,8 @@ fun Application.module() {
       val requisitionList = transaction {
         RequisitionTable .selectAll().map {
           Requisition(
-            
             it[RequisitionTable.requesterName],
+            it[RequisitionTable.requisitionId],
             it[RequisitionTable.requesterContact],
             it[RequisitionTable.itemDescription],
             it[RequisitionTable.quantity],

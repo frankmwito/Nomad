@@ -22,6 +22,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.FilterList
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Search
@@ -87,12 +88,6 @@ fun InventoryManagement() {
           .background(MaterialTheme.colorScheme.primary),
 
         actions = {
-          IconButton(onClick = { context.startActivity(Intent(context, InventoryScreen::class.java)) }) {
-            Icon(
-              imageVector = Icons.Default.ArrowBack,
-              contentDescription = "Back",
-            )
-          }
           Row(
             horizontalArrangement = Arrangement.SpaceBetween,
             modifier = Modifier.fillMaxWidth()
@@ -248,6 +243,7 @@ fun FilterSortMenu(viewModel: InventoryManagementViewModel) {
 
 @Composable
 fun SearchBar(viewModel: InventoryManagementViewModel) {
+  val context = LocalContext.current
   var searchQuery by remember { mutableStateOf("") }
 
   TextField(
@@ -263,4 +259,12 @@ fun SearchBar(viewModel: InventoryManagementViewModel) {
     placeholder = { Text("Search...") },
     singleLine = true
   )
+  IconButton(
+    onClick = {
+      searchQuery = ""
+      viewModel.searchItems(searchQuery)
+    }
+  ) {
+    Icon(Icons.Default.Clear, null)
+  }
 }

@@ -17,6 +17,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.FilterList
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Search
@@ -271,4 +272,12 @@ fun SearchBarStockManagement(viewModel: StockManagementViewModel) {
     placeholder = { Text("Search...") },
     singleLine = true
   )
+  IconButton(
+    onClick = {
+      searchQuery = ""
+      viewModel.searchItems(searchQuery)
+    }
+  ) {
+    Icon(Icons.Default.Clear, null)
+  }
 }
