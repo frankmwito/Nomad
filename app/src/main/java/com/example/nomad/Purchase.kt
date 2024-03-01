@@ -209,6 +209,7 @@ fun SearchBar(viewModel: PurchaseOrderViewModel) {
     )
     IconButton(
       onClick = {
+        searchQuery = ""
         viewModel.searchItems(searchQuery)
       }
     ) {

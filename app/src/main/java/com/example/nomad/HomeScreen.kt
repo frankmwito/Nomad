@@ -41,6 +41,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -50,6 +51,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Color.Companion.Black
 import androidx.compose.ui.graphics.Color.Companion.White
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.res.colorResource
@@ -60,6 +62,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
@@ -98,6 +101,11 @@ class HomeScreen : ComponentActivity() {
 @ExperimentalFoundationApi
 @Composable
 fun Home_screen() {
+  val salesViewModel: SalesViewModel = viewModel()
+
+  LaunchedEffect(Unit) {
+    salesViewModel.fetchSalesData()
+  }
   Box(
     modifier = Modifier
       .background(White)
@@ -117,7 +125,7 @@ fun Home_screen() {
             iconId = R.drawable.sales,
             lightColor =Color.Cyan,
             mediumColor = Color.White,
-            darkColor = Color.LightGray
+            darkColor = Color.LightGray,
           ),
           Features(
             title = "Sales Amount",
@@ -140,9 +148,16 @@ fun Home_screen() {
             mediumColor = Color.White,
             darkColor = Color.LightGray
           ),
-        )
+        ),
+        salesViewModel = salesViewModel
       )
-    }
+    }/*
+    Column(
+      verticalAlignment = Alignment.Bottom,
+      horizontalArrangement = Arrangement.SpaceBetween,
+      modifier = Modifier
+      .fillMaxSize()) {
+      subscription()*/
   }
 }
 
@@ -384,29 +399,27 @@ fun TransactionsItem(index: Int, width: Dp) {
 
 @Composable
 @ExperimentalFoundationApi
-fun FeatureSection(features: List<Features>) {
-  Column(modifier = Modifier.fillMaxWidth())
-  {
+fun FeatureSection(features: List<Features>, salesViewModel: SalesViewModel) {
+  Column(modifier = Modifier.fillMaxWidth()) {
     Text(
-      text = "Features", // This should be a String, not AnnotatedString
+      text = "Features",
       modifier = Modifier.padding(15.dp)
     )
     LazyVerticalGrid(
       columns = GridCells.Fixed(2),
       contentPadding = PaddingValues(start = 7.5.dp, end = 7.5.dp, bottom = 7.5.dp),
       modifier = Modifier.fillMaxHeight()
-    )
-    {
+    ) {
       items(features.size) {
-        FeatureItem(features = features[it])
+        FeatureItem(features = features[it], salesViewModel = salesViewModel)
       }
     }
   }
 }
+
 @Composable
-fun FeatureItem(
-  features: Features
-) {
+fun FeatureItem(features: Features, salesViewModel: SalesViewModel) {
+  val salesData = salesViewModel.sales.value
   BoxWithConstraints(
     modifier = Modifier
       .padding(7.5.dp)
@@ -480,26 +493,74 @@ fun FeatureItem(
       Icon(
         painter = painterResource(id = features.iconId),
         contentDescription = features.title,
-        tint = White,
+        tint = Black,
         modifier = Modifier.align(Alignment.BottomStart)
       )
-      Text(
-        text = "Start",
-        color = colorResource(id = R.color.white),
-        fontSize = 14.sp,
-        fontWeight = FontWeight.Bold,
-        modifier = Modifier
-          .clickable {
-            // Handle the click
+      when (features.title) {
+        "No of Sales" -> {
+          salesData?.let {
+            Text(
+              text = it.sumBy { it.noofSales }.toString(),
+              color = colorResource(id = R.color.black),
+              fontSize = 14.sp,
+              fontWeight = FontWeight.Bold,
+              modifier = Modifier.align(Alignment.BottomEnd)
+            )
           }
-          .align(Alignment.BottomEnd)
-          .clip(RoundedCornerShape(10.dp))
-          .background(colorResource(id = R.color.purple_700))
-          .padding(vertical = 6.dp, horizontal = 15.dp)
-      )
+        }
+        "Sales Amount" -> {
+          salesData?.let {
+            Text(
+              text = salesData.sumByDouble { it.salesAmount }.toString(),
+              color = colorResource(id = R.color.black),
+              fontSize = 14.sp,
+              fontWeight = FontWeight.Bold,
+              modifier = Modifier.align(Alignment.BottomEnd)
+            )
+          }
+        }
+        "Paid Amount" -> {
+          salesData?.let {
+            Text(
+              text = salesData.sumByDouble { it.paidAmount }.toString(),
+              color = colorResource(id = R.color.black),
+              fontSize = 14.sp,
+              fontWeight = FontWeight.Bold,
+              modifier = Modifier.align(Alignment.BottomEnd)
+            )
+          }
+        }
+        "Bills" -> {
+          salesData?.let {
+            Text(
+              text = salesData.sumByDouble { it.bills }.toString(),
+              color = colorResource(id = R.color.black),
+              fontSize = 14.sp,
+              fontWeight = FontWeight.Bold,
+              modifier = Modifier.align(Alignment.BottomEnd)
+            )
+          }
+        }
+      }
     }
   }
 }
+/*
+@Composable
+fun subscription(color: Color = Color.Cyan) {
+  Row(
+    verticalAlignment = Alignment.Bottom,
+    horizontalArrangement = Arrangement.SpaceBetween,
+    modifier = Modifier
+      .padding(15.dp)
+      .clip(RoundedCornerShape(10.dp))
+      .background(color)
+      .padding(horizontal = 15.dp, vertical = 20.dp)
+      .fillMaxWidth()
+  ) {
+Text(text = "Subscription plan.....")
+  }
+}*/
 
 @OptIn(ExperimentalFoundationApi::class)
 @Preview(showBackground = true)

@@ -32,12 +32,14 @@
             android:name=".SalesViewModel"
             android:exported="false"
             android:label="@string/title_activity_sales_view_model"
-            android:theme="@style/Theme.Nomad" />
+            android:theme="@style/Theme.Nomad"
+            tools:ignore="Instantiatable" />
         <activity
             android:name=".ReceiveGoodsViewModel"
             android:exported="false"
             android:label="@string/title_activity_receive_goods_view_model"
-            android:theme="@style/Theme.Nomad" />
+            android:theme="@style/Theme.Nomad"
+            tools:ignore="Instantiatable" />
         <activity
             android:name=".RequisitionScreen"
             android:exported="false"
@@ -47,7 +49,8 @@
             android:name=".RequisitionViewModel"
             android:exported="false"
             android:label="@string/title_activity_requisition_view_model"
-            android:theme="@style/Theme.Nomad" />
+            android:theme="@style/Theme.Nomad"
+            tools:ignore="Instantiatable" />
         <activity
             android:name=".StockManagementScreen"
             android:exported="false"
@@ -57,7 +60,8 @@
             android:name=".StockManagementViewModel"
             android:exported="false"
             android:label="@string/title_activity_stock_management_view_model"
-            android:theme="@style/Theme.Nomad" />
+            android:theme="@style/Theme.Nomad"
+            tools:ignore="Instantiatable" />
         <activity
             android:name=".InventoryManagementScreen"
             android:exported="false"

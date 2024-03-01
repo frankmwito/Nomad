@@ -8,6 +8,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.State
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.LiveData
@@ -15,19 +17,19 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.nomad.ui.theme.NomadTheme
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 // SalesViewModel.kt
 
 class SalesViewModel : ViewModel() {
-  private val _sales: MutableLiveData<List<Sales>> = MutableLiveData()
+  private val _sales: MutableLiveData<List<Sales>> = MutableLiveData<List<Sales>>()
   val sales: LiveData<List<Sales>> = _sales
 
-  private val _filteredAndSortedSales = MutableLiveData<List<Sales>>()
-  val filteredAndSortedSales: LiveData<List<Sales>> = _filteredAndSortedSales
 
-  private val _searchQuery = MutableLiveData<String>()
-  val searchQuery: LiveData<String> = _searchQuery
+  private val _filteredAndSortedSales = mutableStateOf<List<Sales>>(emptyList())
+  val filteredAndSortedSales: State<List<Sales>> = _filteredAndSortedSales
 
   init {
     fetchSalesData()
@@ -37,8 +39,9 @@ class SalesViewModel : ViewModel() {
     viewModelScope.launch {
       try {
         val response = ApiClient.api.getAllSales()
-        _sales.postValue(response)
-        filteredAndSortedSales("")
+        withContext(Dispatchers.Main) {
+          _sales.value = response
+        }
       } catch (e: Exception) {
         e.printStackTrace()
       }
@@ -74,7 +77,8 @@ class SalesViewModel : ViewModel() {
     val sortedData = sales.value?.sortedBy { it.itemName.orEmpty() } ?: emptyList()
     _filteredAndSortedSales.value = sortedData
   }
-
+  private val _searchQuery = MutableLiveData<String>()
+  val searchQuery: LiveData<String> = _searchQuery
   fun searchItems(query: String) {
     _searchQuery.value = query
   }
