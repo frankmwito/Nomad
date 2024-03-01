@@ -42,7 +42,7 @@ object StockManagementTable : IntIdTable("stock_management") {
   val category = text("category")
 }
 data class Requisition(
-  /*val requisitionId: Int,*/
+
   val requesterName: String,
   val requesterContact: String,
   val itemDescription: String,
@@ -60,7 +60,7 @@ data class Requisition(
 )
 
 object RequisitionTable : IntIdTable("requisition") {
-  /*val requisitionId = integer("requisition_id").entityId()*/
+
   val requesterName = varchar("requester_name", 255)
   val requesterContact = varchar("requester_contact", 20)
   val itemDescription = varchar("item_description", 255)
@@ -278,7 +278,7 @@ fun Application.module() {
       val requisitionList = transaction {
         RequisitionTable .selectAll().map {
           Requisition(
-            /*it[RequisitionTable.requisitionId].value,*/
+            
             it[RequisitionTable.requesterName],
             it[RequisitionTable.requesterContact],
             it[RequisitionTable.itemDescription],
